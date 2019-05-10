@@ -6,15 +6,19 @@
     "react-scripts": "1.1.4"
   },
   "dependencies": {
+    "concurrently": "^4.1.0",
     "cors": "^2.8.4",
     "react": "^16.3.2",
-    "react-dom": "^16.3.2"
+    "react-dom": "^16.3.2",
+    "react-modal": "^3.8.1",
+    "styled-components": "^4.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "api": "node ./src/server.js",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"yarn start\" \"yarn api\""
   }
 }
