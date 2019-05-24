@@ -20,8 +20,10 @@ class PokedexModal extends React.Component {
   };
 
   filter = () => {
-    let newArr = this.props.data.filter(d =>
-      d.name.includes(this.state.search)
+    let newArr = this.props.data.filter(
+      d =>
+        d.name.toUpperCase().includes(this.state.search.toUpperCase()) ||
+        d.type.toUpperCase().includes(this.state.search.toUpperCase())
     );
     return newArr.map((d, i) => (
       <PokemonCard addToDex={this.props.addToDex} data={d} key={i} />

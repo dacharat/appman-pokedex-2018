@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.css";
 import styled from "styled-components";
-import PokemonCard from "./components/PokemonCard";
-import Scrollarea from "react-scrollbar";
 import Modal from "./components/Modal";
+import MyDex from "./components/MyDex";
 
 const COLORS = {
   Psychic: "#f8a5c2",
@@ -64,9 +63,6 @@ const customStyles = {
     backgroundColor: "rgba(0, 0, 0, 0.5)"
   }
 };
-const Scroll = styled(Scrollarea)`
-  height: 600px;
-`;
 
 class App extends React.Component {
   state = {
@@ -92,15 +88,18 @@ class App extends React.Component {
     });
   };
 
+  removeFromMyDex = pokemon => {
+    this.setState({
+      myDex: this.state.myDex.filter(d => d !== pokemon),
+      data: [...this.state.data, pokemon]
+    });
+  };
+
   render() {
     return (
       <Component>
         <Title>My Pokedex</Title>
-        <Scroll horizontal={false}>
-          {this.state.myDex.map((dex, i) => (
-            <PokemonCard data={dex} key={i} />
-          ))}
-        </Scroll>
+        <MyDex dex={this.state.myDex} remove={this.removeFromMyDex} />
         <Bottom>
           <Button onClick={this.onButtonClicked}>+</Button>
         </Bottom>
