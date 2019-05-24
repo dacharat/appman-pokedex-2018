@@ -1,8 +1,9 @@
 import React from "react";
 import "./App.css";
 import styled from "styled-components";
-import Modal from "react-modal";
 import PokemonCard from "./components/PokemonCard";
+import Scrollarea from "react-scrollbar";
+import Modal from "./components/Modal";
 
 const COLORS = {
   Psychic: "#f8a5c2",
@@ -52,23 +53,20 @@ const Button = styled.div`
   justify-content: center;
   padding: 10px;
 `;
-const Input = styled.input`
-  width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 20px;
-`;
 const customStyles = {
   content: {
-    top: "15%",
+    top: "12%",
     left: "15%",
     right: "17%",
-    bottom: "10%"
+    bottom: "5%"
   },
   overlay: {
     backgroundColor: "rgba(0, 0, 0, 0.5)"
   }
 };
+const Scroll = styled(Scrollarea)`
+  height: 600px;
+`;
 
 class App extends React.Component {
   state = {
@@ -80,7 +78,7 @@ class App extends React.Component {
   async componentDidMount() {
     const res = await fetch("http://localhost:3030/api/cards");
     const json = await res.json();
-    this.setState({ data: json.cards }, () => console.log(this.state.data));
+    this.setState({ data: json.cards });
   }
 
   onButtonClicked = () => {
@@ -98,9 +96,11 @@ class App extends React.Component {
     return (
       <Component>
         <Title>My Pokedex</Title>
-        {this.state.myDex.map((dex, i) => (
-          <PokemonCard data={dex} key={i} />
-        ))}
+        <Scroll horizontal={false}>
+          {this.state.myDex.map((dex, i) => (
+            <PokemonCard data={dex} key={i} />
+          ))}
+        </Scroll>
         <Bottom>
           <Button onClick={this.onButtonClicked}>+</Button>
         </Bottom>
@@ -108,12 +108,9 @@ class App extends React.Component {
           isOpen={this.state.isOpen}
           onRequestClose={this.onButtonClicked}
           style={customStyles}
-        >
-          <Input placeholder="find pokemon" type="text" />
-          {this.state.data.map((d, i) => (
-            <PokemonCard addToDex={this.addToMyDex} data={d} key={i} />
-          ))}
-        </Modal>
+          data={this.state.data}
+          addToDex={this.addToMyDex}
+        />
       </Component>
     );
   }
